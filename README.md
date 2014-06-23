@@ -7,7 +7,7 @@ This is a application to connect to a server (you compile and control) and send 
 
 Supported Encryption:
 
-- [ ] ClearText (not really encryption)
+- [X] ClearText (not really encryption)
 - [ ] PGP
 - [ ] RSA
 
@@ -63,14 +63,14 @@ For our build we require the packages MinGW and MSYS.
 include $(ACE_ROOT)/include/makeinclude/platform_mingw32.GNU
 ```
 
-	* In the above text, don't replace $(ACE_ROOT) with the actual directory, GNU make will take the value from the environment variable you defined previously.
+In the above text, don't replace $(ACE_ROOT) with the actual directory, GNU make will take the value from the environment variable you defined previously.
 
-	* If you lack Winsock 2, add the line
-
+If you lack Winsock 2, add the line
 ```
 winsock2 = 0
 ```
-	before the previous one.
+
+before the previous one.
 
 ### Optional
 
