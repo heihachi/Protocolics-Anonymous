@@ -45,13 +45,13 @@ For our build we require the packages MinGW and MSYS.
 2. Install the MSYS tools into a common directory, say c:/msys.
 
 3. Open a MSYS shell. Set your PATH environment variable so your MinGW's bin directory is first:
-```bash
-% export PATH=/c/mingw/bin:$PATH
-```
+    ```bash
+    % export PATH=/c/mingw/bin:$PATH
+    ```
 4. Add an ACE_ROOT environment variable pointing to the root of your ACE wrappers source tree:
-```bash
-% export ACE_ROOT=/c/work/mingw/ACE_wrappers
-```
+    ```bash
+    % export ACE_ROOT=/c/work/mingw/ACE_wrappers
+    ```
 	* From now on, we will refer to the root directory of the ACE source tree as $ACE_ROOT.
 
 5. Create a file called config.h in the $ACE_ROOT/ace directory that contains:
