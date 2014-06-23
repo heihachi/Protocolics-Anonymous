@@ -59,18 +59,17 @@ For our build we require the packages MinGW and MSYS.
     #include "ace/config-win32.h"
     ```
 6. Create a file called platform_macros.GNU in the $ACE_ROOT/include/makeinclude directory containing:
-    ```c++
+    ```C++
     include $(ACE_ROOT)/include/makeinclude/platform_mingw32.GNU
     ```
 
     * In the above text, don't replace $(ACE_ROOT) with the actual directory, GNU make will take the value from the environment variable you defined previously.
 
-    * If you lack Winsock 2, add the line
-    ```
-    winsock2 = 0
-    ```
+    * If you lack Winsock 2, add this line before the previous one.
+        ```
+        winsock2 = 0
+        ```
 
-    before the previous one.
 
 ### Optional
 
