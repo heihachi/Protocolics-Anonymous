@@ -55,22 +55,22 @@ For our build we require the packages MinGW and MSYS.
 	* From now on, we will refer to the root directory of the ACE source tree as $ACE_ROOT.
 
 5. Create a file called config.h in the $ACE_ROOT/ace directory that contains:
-```C++
-#include "ace/config-win32.h"
-```
+    ```C++
+    #include "ace/config-win32.h"
+    ```
 6. Create a file called platform_macros.GNU in the $ACE_ROOT/include/makeinclude directory containing:
-```c++
-include $(ACE_ROOT)/include/makeinclude/platform_mingw32.GNU
-```
+    ```c++
+    include $(ACE_ROOT)/include/makeinclude/platform_mingw32.GNU
+    ```
 
-In the above text, don't replace $(ACE_ROOT) with the actual directory, GNU make will take the value from the environment variable you defined previously.
+    * In the above text, don't replace $(ACE_ROOT) with the actual directory, GNU make will take the value from the environment variable you defined previously.
 
-If you lack Winsock 2, add the line
-```
-winsock2 = 0
-```
+    * If you lack Winsock 2, add the line
+    ```
+    winsock2 = 0
+    ```
 
-before the previous one.
+    before the previous one.
 
 ### Optional
 
