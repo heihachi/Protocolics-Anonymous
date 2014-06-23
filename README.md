@@ -62,9 +62,11 @@ For our build we require the packages MinGW and MSYS.
 ```c++
 include $(ACE_ROOT)/include/makeinclude/platform_mingw32.GNU
 ```
+
 	* In the above text, don't replace $(ACE_ROOT) with the actual directory, GNU make will take the value from the environment variable you defined previously.
 
 	* If you lack Winsock 2, add the line
+
 ```
 winsock2 = 0
 ```
