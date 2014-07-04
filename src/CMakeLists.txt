@@ -12,12 +12,18 @@ if(CMAKE_COMPILER_IS_GNUCXX AND NOT MINGW)
   add_definitions(-fno-delete-null-pointer-checks)
 endif()
 
-if( SERVERS )
+add_subdirectory(shared)
+
+if( SERVER OR CLIENT )
   set(sources_windows_Debugging
     ${CMAKE_SOURCE_DIR}/src/shared/Debugging/WheatyExceptionReport.cpp
     ${CMAKE_SOURCE_DIR}/src/shared/Debugging/WheatyExceptionReport.h
   )
-  add_subdirectory(shared)
-  add_subdirectory(server)
-  add_subdirectory(client)
+  if( SERVER )
+    add_subdirectory(server)
+  endif()
+
+  if( CLIENT )
+    add_subdirectory(client)
+  endif()
 endif()

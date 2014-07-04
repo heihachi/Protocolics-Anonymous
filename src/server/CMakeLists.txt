@@ -8,33 +8,33 @@
 # WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-########### authserver ###############
+########### server ###############
 
-#file(GLOB_RECURSE sources_authentication Authentication/*.cpp Authentication/*.h)
-#file(GLOB_RECURSE sources_realms Realms/*.cpp Realms/*.h)
 file(GLOB_RECURSE sources_handler Handler/*.cpp Handler/*.h)
+file(GLOB_RECURSE sources_server Server/*.cpp Server/*.h)
 file(GLOB sources_localdir *.cpp *.h)
 
 if (USE_COREPCH)
-  set(authserver_PCH_HDR PrecompiledHeaders/serverPCH.h)
-  set(authserver_PCH_SRC PrecompiledHeaders/serverPCH.cpp)
+  set(server_PCH_HDR PrecompiledHeaders/serverPCH.h)
+  set(server_PCH_SRC PrecompiledHeaders/serverPCH.cpp)
 endif()
 
-set(authserver_SRCS
-  ${authserver_SRCS}
+set(server_SRCS
+  ${server_SRCS}
   ${sources_handler}
+  ${sources_server}
   ${sources_localdir}
 )
 
 if( WIN32 )
-  set(authserver_SRCS
-    ${authserver_SRCS}
+  set(server_SRCS
+    ${server_SRCS}
     ${sources_windows_Debugging}
   )
   if ( MSVC )
-    set(authserver_SRCS
-      ${authserver_SRCS}
-      authserver.rc
+    set(server_SRCS
+      ${server_SRCS}
+      server.rc
     )
   endif ()
 endif()
@@ -50,28 +50,26 @@ include_directories(
 #  ${CMAKE_SOURCE_DIR}/src/shared/Logging
   ${CMAKE_SOURCE_DIR}/src/server/shared/Window
   ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}/Authentication
-  ${CMAKE_CURRENT_SOURCE_DIR}/Realms
-  ${CMAKE_CURRENT_SOURCE_DIR}/Server
+  ${CMAKE_CURRENT_SOURCE_DIR}/Handler
   ${ACE_INCLUDE_DIR}
-  ${MYSQL_INCLUDE_DIR}
-  ${OPENSSL_INCLUDE_DIR}
+#  ${MYSQL_INCLUDE_DIR}
+#  ${OPENSSL_INCLUDE_DIR}
 )
 
-add_executable(authserver
-  ${authserver_SRCS}
-  ${authserver_PCH_SRC}
+add_executable(server
+  ${server_SRCS}
+  ${server_PCH_SRC}
 )
 
-add_dependencies(authserver revision.h)
+add_dependencies(server revision.h)
 
 if( NOT WIN32 )
-  set_target_properties(authserver PROPERTIES
+  set_target_properties(server PROPERTIES
     COMPILE_DEFINITIONS _TRINITY_REALM_CONFIG="${CONF_DIR}/server.conf"
   )
 endif()
 
-target_link_libraries(authserver
+target_link_libraries(server
   shared
 #  ${MYSQL_LIBRARY}
 #  ${OPENSSL_LIBRARIES}
@@ -81,12 +79,12 @@ target_link_libraries(authserver
 
 if( WIN32 )
   if ( MSVC )
-    add_custom_command(TARGET authserver
+    add_custom_command(TARGET server
       POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/server.conf.dist ${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/
     )
   elseif ( MINGW )
-    add_custom_command(TARGET authserver
+    add_custom_command(TARGET server
       POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/server.conf.dist ${CMAKE_BINARY_DIR}/bin/
     )
@@ -94,14 +92,14 @@ if( WIN32 )
 endif()
 
 if( UNIX )
-  install(TARGETS authserver DESTINATION bin)
-  install(FILES  server.conf.dist DESTINATION ${CONF_DIR})
+  install(TARGETS server DESTINATION bin/server)
+  install(FILES  server.conf.dist DESTINATION ${CONF_DIR}/server)
 elseif( WIN32 )
-  install(TARGETS authserver DESTINATION "${CMAKE_INSTALL_PREFIX}")
-  install(FILES server.conf.dist DESTINATION "${CMAKE_INSTALL_PREFIX}")
+  install(TARGETS server DESTINATION "${CMAKE_INSTALL_PREFIX}/server")
+  install(FILES server.conf.dist DESTINATION "${CMAKE_INSTALL_PREFIX}/server")
 endif()
 
 # Generate precompiled header
 if (USE_COREPCH)
-  add_cxx_pch(authserver ${authserver_PCH_HDR} ${authserver_PCH_SRC})
+  add_cxx_pch(server ${server_PCH_HDR} ${server_PCH_SRC})
 endif()

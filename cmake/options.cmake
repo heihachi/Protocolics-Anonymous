@@ -8,7 +8,8 @@
 # WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-option(SERVERS          "Build server"                                                1)
+option(SERVER           "Build server"                                                1)
+option(CLIENT           "Build client"                                                1)
 option(USE_COREPCH      "Use precompiled headers when compiling server"               1)
 option(WITH_WARNINGS    "Show all warnings during compile (may not work"              0)
 option(WITH_COREDEBUG   "Include additional debug-code in core (may not work)"        0)

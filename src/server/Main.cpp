@@ -1,50 +1,44 @@
-/*
+// $Id: page05.html,v 1.5 1998/10/27 19:05:55 jcej Exp $
 
-*/
+#include "Server/Server.h"
 
-#include "Handler/Client_Acceptor.h"
-
-/*
-As before, we create a simple signal handler that will set our finished
-flag.  There are, of course, more elegant ways to handle program shutdown
-requests but that isn't really our focus right now, so we'll just do the
-easiest thing.
-*/
-
-static sig_atomic_t finished = 0;
+// A signal handler that will close the server object
 extern "C" void handler(int)
 {
-	finished = 1;
+	Server::close();
 }
 
-/*
-A server has to listen for clients at a known TCP/IP port.  The default ACE
-port is 10002 (at least on my system) and that's good enough for what  we
-want to do here.  Obviously, a more robust application would take a command
-line parameter or read from a configuration file or do some other  clever
-thing.  Just like the signal handler above, though, that's what we want to
-focus on, so we're taking the easy way out.
-*/
-
-static const u_short PORT = ACE_DEFAULT_SERVER_PORT;
-
-int main(int argc, char *argv[])
+int main(int, char **)
 {
-	ACE_Reactor reactor;
+	// The server object that abstracts away all of difficult parts.
+	Server server;
 
-	Client_Acceptor peer_acceptor;
+	// Attempt to open the server.  Like all good ACE-based
+	// objects, we'll get -1 on failure.
+	if (server.open() == -1)
+	{
+		ACE_ERROR_RETURN((LM_ERROR, "%p\n", "server.open()"), -1);
+	}
 
-	if (peer_acceptor.open(ACE_INET_Addr(PORT), &reactor) == -1)
-		ACE_ERROR_RETURN((LM_ERROR, "%p\n", "open"), -1);
-
+	// Install a signal handler for ^C so that we can exit gracefully
 	ACE_Sig_Action sa((ACE_SignalHandler)handler, SIGINT);
 
-	ACE_DEBUG((LM_DEBUG, "(%P|%t) starting up server daemon\n"));
-
-	while (!finished)
-		reactor.handle_events();
-
-	ACE_DEBUG((LM_DEBUG, "(%P|%t) shutting down server daemon\n"));
+	// Run the server's main loop until we're interrupted
+	if (server.run() == -1)
+	{
+		ACE_ERROR_RETURN((LM_ERROR, "%p\n", "server.run()"), -1);
+	}
 
 	return 0;
 }
+
+/* These explicit instantiations were taken from an earlier tutorial.
+Your compiler may require others as well.
+*/
+#if defined (ACE_HAS_EXPLICIT_TEMPLATE_INSTANTIATION)
+template class ACE_Acceptor <Handler, ACE_SOCK_ACCEPTOR>;
+template class ACE_Svc_Handler<ACE_SOCK_STREAM, ACE_NULL_SYNCH>;
+#elif defined (ACE_HAS_TEMPLATE_INSTANTIATION_PRAGMA)
+#pragma instantiate ACE_Acceptor <Handler, ACE_SOCK_ACCEPTOR>
+#pragma instantiate ACE_Svc_Handler<ACE_SOCK_STREAM, ACE_NULL_SYNCH>
+#endif /* ACE_HAS_EXPLICIT_TEMPLATE_INSTANTIATION */

@@ -17,10 +17,16 @@ message("")
 
 # Show infomation about the options selected during configuration
 
-if( SERVERS )
+if( SERVER )
   message("* Build server           : Yes (default)")
 else()
   message("* Build server           : No")
+endif()
+
+if( CLIENT )
+  message("* Build client           : Yes (default)")
+else()
+  message("* Build client           : No")
 endif()
 
 if( USE_COREPCH )
@@ -74,4 +80,5 @@ if ( NOJEM )
 endif()
 
 message("")
-
+message(" ** Installing with third-party software: ACE, MySQL, ncurses, utf8cpp, zlib **")
+message("")

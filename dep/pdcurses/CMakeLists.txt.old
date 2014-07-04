@@ -1,0 +1,29 @@
+# Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+#
+# This file is free software; as a special exception the author gives
+# unlimited permission to copy and/or distribute it, with or without
+# modifications, as long as this notice is preserved.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+# NOTE: Do not use glob here, it would include files we don't want
+file(GLOB_RECURSE sources_pdcurses pdcurses/*.cpp pdcurses/*.h)
+file(GLOB_RECURSE sources_win32 win32/*.cpp win32/*.h)
+file(GLOB sources_localdir *.cpp *.h)
+
+set(curses_STAT_SRCS
+  ${curses_STAT_SRCS}
+  ${sources_pdcurses}
+  ${sources_win32}
+  ${sources_localdir}
+)
+
+set_source_files_properties( PROPERTIES LANGUAGE CXX)
+
+#add_library(curses SHARED
+#  ${curses_STAT_SRCS}
+#)
+
+install(TARGETS curses RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/client")

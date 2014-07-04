@@ -20,7 +20,6 @@
 #include "WheatyExceptionReport.h"
 
 #include "Common.h"
-#include "SystemConfig.h"
 #include "revision.h"
 
 #define CrashFolder _T("Crashes")
@@ -423,7 +422,7 @@ PEXCEPTION_POINTERS pExceptionInfo)
     GetLocalTime(&systime);
 
     // Start out with a banner
-    _tprintf(_T("Revision: %s\r\n"), _FULLVERSION);
+    _tprintf(_T("Revision: %s\r\n"), _HASH);
     _tprintf(_T("Date %u:%u:%u. Time %u:%u \r\n"), systime.wDay, systime.wMonth, systime.wYear, systime.wHour, systime.wMinute);
     PEXCEPTION_RECORD pExceptionRecord = pExceptionInfo->ExceptionRecord;
 

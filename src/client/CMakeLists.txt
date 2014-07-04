@@ -10,7 +10,7 @@
 
 ########### client ###############
 
-#file(GLOB_RECURSE sources_handler Handler/*.cpp Handler/*.h)
+file(GLOB_RECURSE sources_Client Client/*.cpp Client/*.h)
 file(GLOB sources_localdir *.cpp *.h)
 
 if (USE_COREPCH)
@@ -20,7 +20,7 @@ endif()
 
 set(client_SRCS
   ${client_SRCS}
-  ${sources_handler}
+  ${sources_Client}
   ${sources_localdir}
 )
 
@@ -42,15 +42,16 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/src/shared
   ${CMAKE_SOURCE_DIR}/src/shared/Database
   ${CMAKE_SOURCE_DIR}/src/shared/Debugging
+  ${CMAKE_SOURCE_DIR}/src/shared/Client
 #  ${CMAKE_SOURCE_DIR}/src/shared/Cryptography
 #  ${CMAKE_SOURCE_DIR}/src/shared/Cryptography/Authentication
 #  ${CMAKE_SOURCE_DIR}/src/shared/Logging
-  ${CMAKE_SOURCE_DIR}/src/server/shared/Window
+  ${CMAKE_SOURCE_DIR}/src/client/shared/Window
   ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}/Handler
+  ${CMAKE_CURRENT_SOURCE_DIR}/Client
   ${ACE_INCLUDE_DIR}
-  ${MYSQL_INCLUDE_DIR}
-  ${OPENSSL_INCLUDE_DIR}
+#  ${MYSQL_INCLUDE_DIR}
+#  ${OPENSSL_INCLUDE_DIR}
 )
 
 add_executable(client
@@ -58,7 +59,7 @@ add_executable(client
   ${client_PCH_SRC}
 )
 
-add_dependencies(client revision.h)
+add_dependencies(client revision.h )
 
 if( NOT WIN32 )
   set_target_properties(client PROPERTIES
@@ -89,11 +90,11 @@ if( WIN32 )
 endif()
 
 if( UNIX )
-  install(TARGETS client DESTINATION bin)
-  install(FILES  server.conf.dist DESTINATION ${CONF_DIR})
+  install(TARGETS client DESTINATION bin/client)
+  install(FILES  client.conf.dist DESTINATION ${CONF_DIR}/client)
 elseif( WIN32 )
-  install(TARGETS client DESTINATION "${CMAKE_INSTALL_PREFIX}")
-  install(FILES server.conf.dist DESTINATION "${CMAKE_INSTALL_PREFIX}")
+  install(TARGETS client DESTINATION "${CMAKE_INSTALL_PREFIX}/client")
+  install(FILES client.conf.dist DESTINATION "${CMAKE_INSTALL_PREFIX}/client")
 endif()
 
 # Generate precompiled header

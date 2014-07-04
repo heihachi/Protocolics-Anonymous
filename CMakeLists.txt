@@ -64,6 +64,7 @@ if( UNIX )
   find_package(Readline)
   find_package(ZLIB)
   find_package(BZip2)
+  find_package(Curses)
 endif()
 
 if(NOT WITHOUT_GIT)
